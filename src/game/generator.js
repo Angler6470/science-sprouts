@@ -11,7 +11,7 @@ const shuffle = (arr) => [...arr].sort(() => Math.random() - 0.5);
  *  - labs:  { [theme]: [{q, a, d:[..]}, ...] }
  *  - facts: { [theme]: { [difficulty]: [{t, f1, f2}, ...] } }
  */
-const generateProblemFromPack = ({ pack, mode, theme, difficulty }) => {
+export function generateProblemFromPack({ pack, mode, theme, difficulty }) {
   const banks = pack?.banks || {};
 
   // 1) VOCAB: choose the correct term for a definition
@@ -31,7 +31,7 @@ const generateProblemFromPack = ({ pack, mode, theme, difficulty }) => {
     const options = shuffle([correct, ...distractors]).slice(0, 3);
 
     return {
-      prompt: `Which word matches: "${item.def}"`,
+      prompt: `Which word matches: “${item.def}”`,
       options,
       answer: correct
     };
@@ -72,6 +72,4 @@ const generateProblemFromPack = ({ pack, mode, theme, difficulty }) => {
   }
 
   return { prompt: 'Unknown mode.', options: [], answer: '' };
-};
-
-export default generateProblemFromPack;
+}
