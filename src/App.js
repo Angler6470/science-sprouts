@@ -5,7 +5,7 @@ import { useSessionTimer } from './hooks/useSessionTimer';
 import SplashScreen from './components/SplashScreen';
 import HelpModal from './components/HelpModal';
 import { SCIENCE_VOCAB, SCIENCE_LABS, SCIENCE_FACTS, SCIENCE_MODES } from './content/science';
-import generateProblemFromPack from './game/generator';
+import { generateProblemFromPack } from './game/generator';
 
 /**
  * Module-level constants for reading content
