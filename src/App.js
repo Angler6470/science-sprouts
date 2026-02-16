@@ -295,7 +295,7 @@ const [gameMode, setGameMode] = useState('vocab');
       progressGradient: 'from-purple-500 to-pink-500',
       textColor: 'text-slate-200',
       mascot: '/assets/mascot-space.png',
-      helper: '/assets/ocean-stars.png',
+      helper: '/assets/helper-stars.png',
       themeColor: 'bg-purple-600',
       seedName: 'Asteroid',
       bud: '/assets/space/collectible-1.png',
