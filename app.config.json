@@ -1,0 +1,7 @@
+{
+  "appId": "science-sprouts",
+  "displayName": "Science Sprouts",
+  "assetsBasePath": "/assets/science-sprouts",
+  "defaultTheme": "garden",
+  "enabledGameModes": ["vocab", "labs", "facts"]
+}
