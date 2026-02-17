@@ -1,6 +1,7 @@
 // src/content/science.js
 export const pack = {
   id: 'science',
+  type: 'science',
   title: 'Science Sprouts',
   modes: [
     { key: 'vocab', label: 'Vocab' },

@@ -2,10 +2,10 @@ import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react'
 import { loadProgress, recordAnswer, recordSessionStart, recordSessionEnd } from './lib/progress';
 import { loadParentSettings, saveParentSettings } from './lib/parentSettings';
 import { useSessionTimer } from './hooks/useSessionTimer';
+import { generateProblem } from './game/generator';
 import SplashScreen from './components/SplashScreen';
 import HelpModal from './components/HelpModal';
-import { SCIENCE_VOCAB, SCIENCE_LABS, SCIENCE_FACTS, SCIENCE_MODES } from './content/science';
-import { generateProblemFromPack } from './game/generator';
+import { pack } from './content/science';
 
 /**
  * Module-level constants for reading content
@@ -200,15 +200,7 @@ const ParentSettingsPanel = ({ settings, onUpdate }) => {
  */
 function App() {
   // Global Game State
-  const SCIENCE_PACK = useMemo(() => ({
-    banks: {
-      vocab: SCIENCE_VOCAB,
-      labs: SCIENCE_LABS,
-      facts: SCIENCE_FACTS
-    }
-  }), []);
-
-const [gameMode, setGameMode] = useState('vocab'); 
+  const [gameMode, setGameMode] = useState('vocab'); 
   const [difficulty, setDifficulty] = useState('intermediate'); 
   const [theme, setTheme] = useState('garden'); 
   const [problem, setProblem] = useState({ prompt: '', options: [], answer: '' });
@@ -391,8 +383,7 @@ const [gameMode, setGameMode] = useState('vocab');
     const recentSet = new Set(recent);
 
     // Generate one candidate problem using the shared generator
-    let candidate = generateProblemFromPack({
-      pack: SCIENCE_PACK,
+    let candidate = generateProblem({
       mode: gameMode,
       theme,
       difficulty: diffKey
@@ -402,8 +393,7 @@ const [gameMode, setGameMode] = useState('vocab');
     let key = `${gameMode}|${difficulty}|${theme}|${candidate.prompt}|${candidate.answer}`;
 
     for (let tries = 0; tries < 25 && recentSet.has(key); tries++) {
-      candidate = generateProblemFromPack({
-        pack: SCIENCE_PACK,
+      candidate = generateProblem({
         mode: gameMode,
         theme,
         difficulty: diffKey
@@ -418,7 +408,7 @@ const [gameMode, setGameMode] = useState('vocab');
 
     setProblem(candidate);
     setHintedOptionIndex(null);
-  }, [difficulty, theme, gameMode, SCIENCE_PACK]);
+  }, [difficulty, theme, gameMode]);
 
 useEffect(() => {
     generateProblem();
@@ -595,7 +585,7 @@ useEffect(() => {
               </button>
             ))}
           </div>
-          {SCIENCE_MODES.map(({ key: m, label }) => (
+          {pack.modes.map(({ key: m, label }) => (
             <button 
               key={m}
               disabled={parentSettings.locks.gameMode || !parentSettings.allowedModes.includes(m)}
