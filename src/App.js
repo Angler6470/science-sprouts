@@ -512,140 +512,82 @@ useEffect(() => {
         <span className="text-sm">⚙️</span>
       </button>
 
-      {/* Side Difficulty Toggle */}
-      <div className="hidden md:flex fixed left-2 top-1/2 -translate-y-1/2 flex flex-col gap-1.5 z-40">
-        {['beginner', 'intermediate', 'advanced'].map((d) => (
-          <div key={d} className="relative group">
-            <button
-              disabled={parentSettings.locks.difficulty || !parentSettings.allowedDifficulties.includes(d)}
-              onClick={() => setDifficulty(d)}
-              className={`w-8 h-8 rounded-xl flex items-center justify-center text-[9px] font-black uppercase transition-all shadow-md border-b-2 
-              ${difficulty === d ? 'bg-green-500 text-white scale-105 border-green-700' : 'bg-white text-stone-400 border-stone-200'}
-              ${parentSettings.locks.difficulty ? 'opacity-50 cursor-not-allowed' : ''}
-              ${!parentSettings.allowedDifficulties.includes(d) ? 'hidden' : ''}`}
-            >
-              {d[0]}
-            </button>
-            {parentSettings.locks.difficulty && difficulty === d && (
-              <span className="absolute -right-2 -top-1 text-[8px] drop-shadow-sm">🔒</span>
-            )}
-          </div>
+      {/* Theme Toggle - Compact */}
+      <div className="fixed right-2 top-[calc(env(safe-area-inset-top)+0.5rem)] z-40 flex gap-1">
+        {['garden', 'ocean', 'space'].map((t) => (
+          <button
+            key={t}
+            disabled={parentSettings.locks.theme || !parentSettings.allowedThemes.includes(t)}
+            onClick={() => setTheme(t)}
+            className={`w-6 h-6 rounded-full transition-all ${theme === t ? `${themeConfig[t].themeColor} scale-110 shadow-md` : 'bg-stone-300 opacity-40 scale-90'} ${!parentSettings.allowedThemes.includes(t) ? 'hidden' : ''}`}
+          />
         ))}
       </div>
-
-      {/* Style Panel */}
-      <div className="hidden sm:flex fixed right-2 top-[calc(env(safe-area-inset-top)+0.5rem)] z-40 flex flex-col items-center">
-        <div className="bg-stone-800 p-1.5 rounded-full shadow-xl flex flex-col gap-2 border-2 border-stone-700 relative">
-          {['garden', 'ocean', 'space'].map((t) => (
-            <button
-              key={t}
-              disabled={parentSettings.locks.theme || !parentSettings.allowedThemes.includes(t)}
-              onClick={() => setTheme(t)}
-              className={`w-5 h-5 rounded-full transition-all duration-300 relative
-              ${theme === t 
-                ? `${themeConfig[t].themeColor} shadow-[0_0_10px_rgba(255,255,255,0.4)] scale-110` 
-                : 'bg-stone-600 opacity-40'}
-              ${!parentSettings.allowedThemes.includes(t) ? 'hidden' : ''}`}
-            />
-          ))}
-          {parentSettings.locks.theme && (
-            <span className="absolute -left-1 -top-1 text-[8px] drop-shadow-sm">🔒</span>
-          )}
-        </div>
-        <span className={`text-[7px] font-black mt-1 uppercase tracking-widest ${theme === 'space' ? 'text-slate-400' : 'text-stone-400'}`}>Theme</span>
-      </div>
       
-      {/* Header */}
-      <header className="w-full max-w-md flex flex-col items-center mt-1 shrink-0">
-        <div className="flex items-center gap-3 mb-1">
-          <div className={`w-16 h-16 ${safeTheme.headerBg} rounded-full flex items-center justify-center shadow-inner border-2 ${safeTheme.headerBorder} overflow-hidden`}>
-            <img src={safeTheme.mascot} alt="mascot" className="w-14 h-14 object-contain" />
-          </div>
-          <div>
-            <h1 className={`text-3xl font-normal ${safeTheme.accent} tracking-tight leading-none`} style={{ fontFamily: '"Bubblegum Sans", cursive' }}>Science Sprouts</h1>
-            <div className={`mt-1 px-3 py-0.5 rounded-full text-[9px] font-black text-white uppercase inline-block
-              ${level <= 3 ? 'bg-yellow-500' : level <= 6 ? 'bg-orange-500' : 'bg-rose-600'}`}>
-              Level {level}
+      {/* Compact Header */}
+      <header className="w-full max-w-md shrink-0 mb-1">
+        <div className="flex items-center justify-between gap-2 bg-white/50 rounded-xl p-1.5 shadow-sm">
+          <div className="flex items-center gap-2">
+            <div className={`w-10 h-10 ${safeTheme.headerBg} rounded-full flex items-center justify-center shadow-inner border-2 ${safeTheme.headerBorder} overflow-hidden`}>
+              <img src={safeTheme.mascot} alt="mascot" className="w-8 h-8 object-contain" />
+            </div>
+            <div className="flex flex-col">
+              <h1 className={`text-sm font-black ${safeTheme.accent} leading-none`} style={{ fontFamily: '"Bubblegum Sans", cursive' }}>Science Sprouts</h1>
+              <div className="flex gap-1 mt-0.5">
+                {pack.modes.map(({ key: m }) => (
+                  <button 
+                    key={m}
+                    disabled={parentSettings.locks.gameMode || !parentSettings.allowedModes.includes(m)}
+                    onClick={() => setGameMode(m)}
+                    className={`px-1.5 py-0.5 rounded-full text-[7px] font-bold transition-all ${gameMode === m ? 'bg-green-500 text-white' : 'bg-white/70 text-green-700'} ${!parentSettings.allowedModes.includes(m) ? 'hidden' : ''}`}
+                  >
+                    {m[0].toUpperCase()}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
-        </div>
-
-        {/* Game Mode Switcher */}
-        <div className="flex bg-white/50 p-0.5 rounded-full border border-green-100 shadow-sm mb-1 relative">
-          {/* Mobile difficulty selector */}
-          <div className="flex md:hidden gap-2 mt-2">
-            {['beginner', 'intermediate', 'advanced'].map((d) => (
-              <button
-                key={`mobile-${d}`}
-                disabled={parentSettings.locks.difficulty || !parentSettings.allowedDifficulties.includes(d)}
-                onClick={() => setDifficulty(d)}
-                className={`px-2 py-1 rounded-full text-[9px] font-black uppercase transition-all border-b-2 ${difficulty === d ? 'bg-green-500 text-white' : 'bg-white text-stone-400'}`}
-              >
-                {d[0].toUpperCase()}
-              </button>
-            ))}
+          <div className={`px-2 py-1 rounded-full text-[9px] font-black text-white ${level <= 3 ? 'bg-yellow-500' : level <= 6 ? 'bg-orange-500' : 'bg-rose-600'}`}>
+            Lv {level}
           </div>
-          {pack.modes.map(({ key: m, label }) => (
-            <button 
-              key={m}
-              disabled={parentSettings.locks.gameMode || !parentSettings.allowedModes.includes(m)}
-              onClick={() => setGameMode(m)}
-              className={`px-2.5 py-0.5 rounded-full text-[8px] font-bold transition-all whitespace-nowrap 
-              ${gameMode === m ? 'bg-green-500 text-white shadow-sm' : 'text-green-700 hover:bg-green-100'}
-              ${!parentSettings.allowedModes.includes(m) ? 'hidden' : ''}`}
-            >
-              {label}
-            </button>
-          ))}
-          {parentSettings.locks.gameMode && (
-            <span className="absolute -right-1 -top-1 text-[8px]">🔒</span>
-          )}
         </div>
       </header>
 
       {/* Main Game Area */}
       <main className="flex-1 min-h-0 flex flex-col items-center justify-center w-full max-w-md gap-3 py-1 overflow-hidden">
         
-        <div className={`bg-white rounded-xl p-2.5 shadow-lg border-b-4 ${safeTheme.problemBorder} w-full text-center relative z-10 shrink-0 transition-transform ${feedback.type === 'error' ? 'animate-shake' : ''}`}>
-          <h2 className="text-xl font-black text-stone-700 mb-1 leading-tight">
-            {problem.prompt}</h2>
-          <div className={`h-10 flex items-center justify-center transition-all duration-300 ${feedback.message ? 'opacity-100 scale-100' : 'opacity-0 scale-50'}`}>
-            <img src={feedback.type === 'success' ? '/assets/feedback-success.png' : '/assets/feedback-error.png'} alt={feedback.type} className="w-8 h-8 mr-2 drop-shadow-md" />
-            <p className={`text-sm font-black ${feedback.type === 'success' ? 'text-green-500' : 'text-orange-400'}`}>
-              {feedback.message}
-            </p>
+        {/* Compact Question Card */}
+        <div className={`bg-white rounded-xl p-2 shadow-md border-b-2 ${safeTheme.problemBorder} w-full shrink-0 transition-transform ${feedback.type === 'error' ? 'animate-shake' : ''}`}>
+          <div className="flex items-center justify-between">
+            <h2 className="text-xl font-black text-stone-700 flex-1 text-center">
+              {problem.prompt}
+            </h2>
+            {feedback.message && (
+              <div className="flex items-center gap-1">
+                <img src={feedback.type === 'success' ? '/assets/feedback-success.png' : '/assets/feedback-error.png'} alt={feedback.type} className="w-6 h-6" />
+              </div>
+            )}
           </div>
-          
-          <button 
-            onClick={handleHint}
-            disabled={hintedOptionIndex !== null || isAnimating}
-            className={`mt-1 px-2 py-0.5 rounded-full text-[7px] font-black uppercase transition-all border-b-2 
-            ${hintedOptionIndex !== null 
-              ? 'bg-stone-100 text-stone-300 border-stone-200' 
-              : 'bg-yellow-100 text-yellow-700 border-yellow-300 hover:bg-yellow-200'}`}
-          >
-            {hintedOptionIndex !== null ? 'Used ✨' : 'Hint? 💡'}
-          </button>
         </div>
 
-        <div data-testid="options-container" className="flex flex-wrap justify-center gap-2 relative z-30 shrink-0 transition-all duration-500 ease-in-out">
-          {problem.options.map((option, index) => (
+        {/* Answer Buttons */}
+        <div className="flex gap-2 shrink-0">{problem.options.map((option, index) => (
             <button
               key={index}
               onClick={() => handleAnswer(option)}
               disabled={isAnimating}
-              className={`
-                rounded-full text-base font-bold text-white shadow-md
-                transform transition-all duration-500 ease-in-out active:scale-95
-                ${safeTheme.btnColors[index]}
-                ${hintedOptionIndex === index 
-                  ? 'opacity-0 scale-0 w-0 h-0 m-0 pointer-events-none p-0 border-0' 
-                  : 'min-w-[50px] h-12 px-2.5 py-1.5 flex items-center justify-center'}
-              `}
+              className={`rounded-full text-lg font-bold text-white shadow-md transform transition-all duration-500 ease-in-out active:scale-95 ${safeTheme.btnColors[index]} ${hintedOptionIndex === index ? 'opacity-0 scale-0 w-0 h-0 m-0 pointer-events-none p-0 border-0' : 'w-12 h-12'}`}
             >
               {hintedOptionIndex === index ? null : option}
             </button>
           ))}
+          <button 
+            onClick={handleHint}
+            disabled={hintedOptionIndex !== null || isAnimating}
+            className={`w-12 h-12 rounded-full flex items-center justify-center transition-all ${hintedOptionIndex !== null ? 'bg-stone-200 text-stone-400' : 'bg-yellow-100 text-yellow-700 hover:bg-yellow-200'}`}
+          >
+            <span className="text-lg">{hintedOptionIndex !== null ? '✨' : '💡'}</span>
+          </button>
         </div>
 
         <div className="w-full flex-1 flex items-center justify-center min-h-0">
@@ -757,29 +699,33 @@ useEffect(() => {
         </div>
       )}
 
-      {/* Shared Garden Visuals */}
-      <div className="w-full max-w-md bg-stone-100/90 rounded-t-2xl p-1.5 border-t-2 border-green-200 min-h-[48px] max-h-[64px] shrink-0 shadow-lg relative z-20 overflow-y-auto">
-        <p className="text-center text-stone-500 text-[7px] font-black uppercase tracking-widest mb-1">My Collection</p>
-        <div className="flex flex-wrap justify-center gap-1.5">
-          {garden.length === 0 && <p className="text-stone-400 text-[9px] italic font-medium text-center">Collection is empty!</p>}
-          {garden.map((plantImg, i) => (
-            <div key={i} className="w-6 h-6 flex items-center justify-center animate-bounce" style={{ animationDelay: `${i * 0.2}s` }}>
-              <img src={plantImg} alt="collection item" className="w-full h-full object-contain drop-shadow-sm" />
+      {/* Compact Footer: Collection + Progress */}
+      <footer className="w-full max-w-md shrink-0">
+        {/* Progress Bar */}
+        <div className="bg-white/80 backdrop-blur-sm rounded-t-xl px-2 py-1 shadow-md">
+          <div className="flex items-center gap-2">
+            <div className="flex-1 h-2 bg-stone-100 rounded-full overflow-hidden border border-stone-200">
+              <div className={`h-full rounded-full transition-all duration-700 ease-out bg-gradient-to-r ${safeTheme.progressGradient}`} style={{ width: `${seeds * 10}%` }}></div>
             </div>
-          ))}
+            <span className="text-[9px] font-black text-stone-600">{seeds * 10}%</span>
+          </div>
         </div>
-        <button onClick={() => setShowResetModal(true)} className="absolute top-1 right-2 text-[7px] font-bold text-stone-300 hover:text-stone-500 uppercase tracking-tighter">Reset</button>
-      </div>
-
-      {/* Footer */}
-      <footer className="w-full max-w-md pb-2 pt-1.5 bg-white px-3 rounded-b-2xl shadow-xl border-x-2 border-b-2 border-stone-200 shrink-0">
-        <div className="flex justify-between items-end mb-0.5 px-1">
-          <span className="text-[8px] font-black text-stone-500 uppercase tracking-wider">Progress</span>
-          <span className="text-[8px] font-black text-stone-600">{seeds * 10}%</span>
-        </div>
-        <div className="w-full h-3.5 bg-stone-100 rounded-full p-0.5 border-2 border-stone-200 shadow-inner overflow-hidden">
-          <div className={`h-full rounded-full transition-all duration-700 ease-out shadow-sm bg-gradient-to-r ${safeTheme.progressGradient}`} style={{ width: `${seeds * 10}%` }}></div>
-        </div>
+        
+        {/* Mini Collection */}
+        {garden.length > 0 && (
+          <div className="bg-stone-100/90 rounded-b-xl px-2 py-1 border-t border-stone-200">
+            <div className="flex items-center gap-1 overflow-x-auto">
+              <span className="text-[7px] font-black text-stone-400 uppercase shrink-0">Collection:</span>
+              {garden.slice(-8).map((plantImg, i) => (
+                <div key={i} className="w-5 h-5 shrink-0">
+                  <img src={plantImg} alt="item" className="w-full h-full object-contain" />
+                </div>
+              ))}
+              {garden.length > 8 && <span className="text-[7px] text-stone-400 shrink-0">+{garden.length - 8}</span>}
+            </div>
+            <button onClick={() => setShowResetModal(true)} className="text-[6px] font-bold text-stone-300 hover:text-stone-500 uppercase float-right">Reset</button>
+          </div>
+        )}
       </footer>
 
       {/* Reset Modal */}
