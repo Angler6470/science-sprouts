@@ -499,7 +499,7 @@ useEffect(() => {
   const safeTheme = currentTheme || themeConfig.garden;
 
   return (
-    <div className={`h-[100dvh] ${safeTheme.bg} flex flex-col items-center p-3 font-sans ${safeTheme.textColor || 'text-stone-800'} overflow-hidden relative transition-colors duration-500`}>
+    <div className={`min-h-[100dvh] ${safeTheme.bg} flex flex-col items-center p-3 pt-[calc(env(safe-area-inset-top)+0.75rem)] pb-[calc(env(safe-area-inset-bottom)+0.75rem)] font-sans ${safeTheme.textColor || 'text-stone-800'} overflow-hidden relative transition-colors duration-500`}>
       {showSplash && (
         <SplashScreen onFinish={() => { sessionStorage.setItem('science_sprouts_seen_splash', '1'); setShowSplash(false); }} />
       )}
@@ -507,7 +507,7 @@ useEffect(() => {
       {/* Parent Access Button */}
       <button 
         onClick={() => { setShowParentModal(true); setIsParentAuthenticated(false); }}
-        className="fixed left-2 top-2 z-40 bg-white/40 backdrop-blur-sm p-2 rounded-full shadow-sm hover:bg-white/60 transition-all border border-white/20"
+        className="fixed left-2 top-[calc(env(safe-area-inset-top)+0.5rem)] z-40 bg-white/40 backdrop-blur-sm p-2 rounded-full shadow-sm hover:bg-white/60 transition-all border border-white/20"
       >
         <span className="text-sm">⚙️</span>
       </button>
@@ -534,7 +534,7 @@ useEffect(() => {
       </div>
 
       {/* Style Panel */}
-      <div className="hidden sm:flex fixed right-2 top-2 z-40 flex flex-col items-center">
+      <div className="hidden sm:flex fixed right-2 top-[calc(env(safe-area-inset-top)+0.5rem)] z-40 flex flex-col items-center">
         <div className="bg-stone-800 p-1.5 rounded-full shadow-xl flex flex-col gap-2 border-2 border-stone-700 relative">
           {['garden', 'ocean', 'space'].map((t) => (
             <button
@@ -604,7 +604,7 @@ useEffect(() => {
       </header>
 
       {/* Main Game Area */}
-      <main className="flex-1 flex flex-col items-center justify-center w-full max-w-md gap-3 py-1 overflow-hidden">
+      <main className="flex-1 min-h-0 flex flex-col items-center justify-center w-full max-w-md gap-3 py-1 overflow-hidden">
         
         <div className={`bg-white rounded-2xl p-4 shadow-lg border-b-4 ${safeTheme.problemBorder} w-full text-center relative z-10 shrink-0 transition-transform ${feedback.type === 'error' ? 'animate-shake' : ''}`}>
           <h2 className="text-4xl font-black text-stone-700 mb-1">
@@ -758,7 +758,7 @@ useEffect(() => {
       )}
 
       {/* Shared Garden Visuals */}
-      <div className="w-full max-w-md bg-stone-100/90 rounded-t-2xl p-2.5 border-t-2 border-green-200 min-h-[80px] shrink-0 shadow-lg relative z-20">
+      <div className="w-full max-w-md bg-stone-100/90 rounded-t-2xl p-2 border-t-2 border-green-200 min-h-[64px] max-h-[96px] md:max-h-[120px] shrink-0 shadow-lg relative z-20 overflow-y-auto">
         <p className="text-center text-stone-500 text-[8px] font-black uppercase tracking-widest mb-1.5">My Collection</p>
         <div className="flex flex-wrap justify-center gap-2">
           {garden.length === 0 && <p className="text-stone-400 text-[9px] italic font-medium text-center">Collection is empty!</p>}
