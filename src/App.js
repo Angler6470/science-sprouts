@@ -376,7 +376,7 @@ function App() {
 
   // Generate a new problem based on level and difficulty
   const difficultyKey = (d) => (d === 'beginner' ? 'beginner' : d === 'advanced' ? 'advanced' : 'intermediate');
-  const generateProblem = useCallback(() => {
+  const generateNewProblem = useCallback(() => {
     const diffKey = difficultyKey(difficulty);
 
     const recent = recentProblemKeysRef.current;
@@ -411,8 +411,8 @@ function App() {
   }, [difficulty, theme, gameMode]);
 
 useEffect(() => {
-    generateProblem();
-  }, [generateProblem]);
+    generateNewProblem();
+  }, [generateNewProblem]);
 
   useEffect(() => {
     setCurrentTargetPlant(plantAssetsRef.current[theme][Math.floor(Math.random() * plantAssetsRef.current[theme].length)]);
@@ -456,7 +456,7 @@ useEffect(() => {
           setSeeds(0);
           setCurrentTargetPlant(plantAssetsRef.current[theme][Math.floor(Math.random() * plantAssetsRef.current[theme].length)]);
           setIsAnimating(false);
-          generateProblem();
+          generateNewProblem();
         }, 2000);
       } else {
         setSeeds(newSeeds);
@@ -466,7 +466,7 @@ useEffect(() => {
             return;
           }
           setIsAnimating(false); 
-          generateProblem(); 
+          generateNewProblem(); 
         }, 1000);
       }
     } else {
@@ -490,7 +490,7 @@ useEffect(() => {
     setSeeds(0);
     setGarden([]);
     setShowResetModal(false);
-    generateProblem();
+    generateNewProblem();
   };
 
   const tiltAngle = 15 - (seeds * 3);
