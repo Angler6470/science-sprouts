@@ -203,8 +203,6 @@ function generateScienceProblem(mode, theme, difficulty, banks) {
     const item = pick(vocab);
     if (!item) return { prompt: 'No questions loaded.', options: [], answer: '' };
     
-    console.log('SCIENCE PROBLEM PAYLOAD (vocab):', { mode, theme, difficulty, item });
-    
     const correct = normalizeString(item.term).toLowerCase();
     const distractPool = vocab
       .filter(x => normalizeString(x.term).toLowerCase() !== correct)
@@ -225,8 +223,6 @@ function generateScienceProblem(mode, theme, difficulty, banks) {
     const tpl = pick(labs);
     if (!tpl) return { prompt: 'No questions loaded.', options: [], answer: '' };
     
-    console.log('SCIENCE PROBLEM PAYLOAD (labs):', { mode, theme, difficulty, tpl });
-    
     const options = shuffle([tpl.a, ...(tpl.d || [])])
       .map(w => normalizeString(w).toLowerCase())
       .slice(0, 3);
@@ -242,8 +238,6 @@ function generateScienceProblem(mode, theme, difficulty, banks) {
     const facts = banks.facts?.[theme]?.[difficulty] || [];
     const item = pick(facts);
     if (!item) return { prompt: 'No questions loaded.', options: [], answer: '' };
-    
-    console.log('SCIENCE PROBLEM PAYLOAD (facts):', { mode, theme, difficulty, item });
     
     const options = shuffle([item.t, item.f1, item.f2])
       .map(s => normalizeString(s).toLowerCase())
