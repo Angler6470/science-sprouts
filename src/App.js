@@ -618,14 +618,14 @@ useEffect(() => {
         </div>
 
         {/* Answer Buttons */}
-        <div className="flex gap-2 shrink-0">{problem.options.map((option, index) => (
+        <div className="w-full grid grid-cols-3 gap-2 shrink-0">{problem.options.map((option, index) => (
             <button
               key={index}
               onClick={() => handleAnswer(option)}
               disabled={isAnimating}
-              className={`rounded-full text-[14px] font-bold text-white shadow-md transform transition-all duration-500 ease-in-out active:scale-95 flex items-center justify-center overflow-hidden ${safeTheme.btnColors[index]} ${hintedOptionIndex === index ? 'opacity-0 scale-0 w-0 h-0 m-0 pointer-events-none p-0 border-0' : 'w-full max-w-full h-14'}`}
+              className={`rounded-xl px-2 py-3 text-[13px] font-bold text-white shadow-md transform transition-all duration-500 ease-in-out active:scale-95 flex items-center justify-center ${safeTheme.btnColors[index]} ${hintedOptionIndex === index ? 'opacity-0 scale-0 hidden pointer-events-none' : ''}`}
             >
-              <span className="line-clamp-2 px-2 text-center leading-tight">
+              <span className="line-clamp-2 text-center leading-tight">
                 {hintedOptionIndex === index ? null : option}
               </span>
             </button>
@@ -633,7 +633,7 @@ useEffect(() => {
           <button 
             onClick={handleHint}
             disabled={hintedOptionIndex !== null || isAnimating}
-            className={`w-11 h-11 shrink-0 rounded-full flex items-center justify-center transition-all ${hintedOptionIndex !== null ? 'bg-stone-200 text-stone-400' : 'bg-yellow-100 text-yellow-700 hover:bg-yellow-200'}`}
+            className={`rounded-xl flex items-center justify-center transition-all ${hintedOptionIndex !== null ? 'bg-stone-200 text-stone-400' : 'bg-yellow-100 text-yellow-700 hover:bg-yellow-200'}`}
           >
             <span className="text-base">{hintedOptionIndex !== null ? '✨' : '💡'}</span>
           </button>
