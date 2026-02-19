@@ -567,31 +567,33 @@ useEffect(() => {
       </div>
       
       {/* Compact Header */}
-      <header className="w-full max-w-md shrink-0 mb-1">
-        <div className="flex items-center justify-between gap-2 bg-white/50 rounded-xl p-1.5 shadow-sm">
-          <div className="flex items-center gap-2">
-            <div className={`w-10 h-10 ${safeTheme.headerBg} rounded-full flex items-center justify-center shadow-inner border-2 ${safeTheme.headerBorder} overflow-hidden`}>
-              <img src={safeTheme.mascot} alt="mascot" className="w-8 h-8 object-contain" />
-            </div>
-            <div className="flex flex-col">
+      <header className="w-full max-w-md shrink-0 mb-1 relative">
+        <div className="bg-white/50 rounded-xl p-1.5 shadow-sm flex items-center justify-center">
+          <div className="flex flex-col items-center gap-1">
+            <div className="flex items-center gap-2">
+              <div className={`w-10 h-10 ${safeTheme.headerBg} rounded-full flex items-center justify-center shadow-inner border-2 ${safeTheme.headerBorder} overflow-hidden`}>
+                <img src={safeTheme.mascot} alt="mascot" className="w-8 h-8 object-contain" />
+              </div>
               <h1 className={`text-sm font-black ${safeTheme.accent} leading-none`} style={{ fontFamily: '"Bubblegum Sans", cursive' }}>Science Sprouts</h1>
-              <div className="flex flex-col gap-0.5 mt-0.5">
-                <span className="text-[7px] font-bold text-stone-500 uppercase tracking-wide">Game Mode</span>
-                <div className="flex gap-1">
-                  {pack.modes.map(({ key: m, label }) => (
-                    <button 
-                      key={m}
-                      disabled={parentSettings.locks.gameMode || !parentSettings.allowedModes.includes(m)}
-                      onClick={() => setGameMode(m)}
-                      className={`min-w-[60px] px-2 py-1 rounded-full text-[8px] font-bold transition-all ${gameMode === m ? 'bg-green-500 text-white shadow-sm' : 'bg-white/70 text-stone-600'} ${!parentSettings.allowedModes.includes(m) ? 'hidden' : ''}`}
-                    >
-                      {label || m}
-                    </button>
-                  ))}
-                </div>
+            </div>
+            <div className="flex flex-col gap-0.5 items-center">
+              <span className="text-[7px] font-bold text-stone-500 uppercase tracking-wide">Game Mode</span>
+              <div className="flex gap-1">
+                {pack.modes.map(({ key: m, label }) => (
+                  <button 
+                    key={m}
+                    disabled={parentSettings.locks.gameMode || !parentSettings.allowedModes.includes(m)}
+                    onClick={() => setGameMode(m)}
+                    className={`min-w-[60px] px-2 py-1 rounded-full text-[8px] font-bold transition-all ${gameMode === m ? 'bg-green-500 text-white shadow-sm' : 'bg-white/70 text-stone-600'} ${!parentSettings.allowedModes.includes(m) ? 'hidden' : ''}`}
+                  >
+                    {label || m}
+                  </button>
+                ))}
               </div>
             </div>
           </div>
+        </div>
+        <div className="absolute right-2 top-1/2 -translate-y-1/2">
           <div className={`px-2 py-1 rounded-full text-[9px] font-black text-white ${level <= 3 ? 'bg-yellow-500' : level <= 6 ? 'bg-orange-500' : 'bg-rose-600'}`}>
             Lv {level}
           </div>
@@ -602,9 +604,9 @@ useEffect(() => {
       <main className="flex-1 min-h-0 flex flex-col items-center justify-center w-full max-w-md gap-3 py-1 overflow-hidden">
         
         {/* Compact Question Card */}
-        <div className={`bg-white rounded-xl p-2 shadow-md border-b-2 ${safeTheme.problemBorder} w-full shrink-0 transition-transform ${feedback.type === 'error' ? 'animate-shake' : ''}`}>
-          <div className="flex items-center justify-between">
-            <h2 className="text-base sm:text-lg font-black text-stone-700 flex-1 text-center leading-tight">
+        <div className={`bg-white rounded-xl p-3 shadow-md border-b-2 ${safeTheme.problemBorder} w-full shrink-0 transition-transform ${feedback.type === 'error' ? 'animate-shake' : ''}`}>
+          <div className="flex items-center justify-between gap-2">
+            <h2 className="text-sm sm:text-base font-black text-stone-700 flex-1 text-center leading-snug line-clamp-2">
               {problem.prompt}
             </h2>
             {feedback.message && (
