@@ -2,6 +2,17 @@ const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
 const shuffle = (arr) => [...arr].sort(() => Math.random() - 0.5);
 
 /**
+ * Normalizes a value to a string for safe string operations
+ * @param {any} value - The value to normalize
+ * @returns {string} A string representation of the value
+ */
+const normalizeString = (value) => {
+  if (value === null || value === undefined) return '';
+  if (typeof value === 'string') return value;
+  return String(value);
+};
+
+/**
  * Factory: creates a problem generator function from a content pack.
  * Returns a function with signature: generateProblem({ mode, theme, difficulty, level })
  * that returns { prompt, options, answer, ... }
@@ -192,16 +203,18 @@ function generateScienceProblem(mode, theme, difficulty, banks) {
     const item = pick(vocab);
     if (!item) return { prompt: 'No questions loaded.', options: [], answer: '' };
     
-    const correct = (item.term || '').toLowerCase();
+    console.log('SCIENCE PROBLEM PAYLOAD (vocab):', { mode, theme, difficulty, item });
+    
+    const correct = normalizeString(item.term).toLowerCase();
     const distractPool = vocab
-      .filter(x => (x.term || '').toLowerCase() !== correct)
-      .map(x => (x.term || '').toLowerCase());
+      .filter(x => normalizeString(x.term).toLowerCase() !== correct)
+      .map(x => normalizeString(x.term).toLowerCase());
 
     const distractors = shuffle(distractPool).slice(0, 2);
     const options = shuffle([correct, ...distractors]).slice(0, 3);
 
     return {
-      prompt: `Which word matches: "${item.def}"`,
+      prompt: `Which word matches: "${normalizeString(item.def)}"`,
       options,
       answer: correct
     };
@@ -212,14 +225,16 @@ function generateScienceProblem(mode, theme, difficulty, banks) {
     const tpl = pick(labs);
     if (!tpl) return { prompt: 'No questions loaded.', options: [], answer: '' };
     
+    console.log('SCIENCE PROBLEM PAYLOAD (labs):', { mode, theme, difficulty, tpl });
+    
     const options = shuffle([tpl.a, ...(tpl.d || [])])
-      .map(w => (w || '').toLowerCase())
+      .map(w => normalizeString(w).toLowerCase())
       .slice(0, 3);
 
     return {
-      prompt: (tpl.q || '').replace('{__}', '____'),
+      prompt: normalizeString(tpl.q).replace('{__}', '____'),
       options,
-      answer: (tpl.a || '').toLowerCase()
+      answer: normalizeString(tpl.a).toLowerCase()
     };
   }
 
@@ -228,14 +243,16 @@ function generateScienceProblem(mode, theme, difficulty, banks) {
     const item = pick(facts);
     if (!item) return { prompt: 'No questions loaded.', options: [], answer: '' };
     
+    console.log('SCIENCE PROBLEM PAYLOAD (facts):', { mode, theme, difficulty, item });
+    
     const options = shuffle([item.t, item.f1, item.f2])
-      .map(s => (s || '').toLowerCase())
+      .map(s => normalizeString(s).toLowerCase())
       .slice(0, 3);
 
     return {
       prompt: 'Which statement is TRUE?',
       options,
-      answer: (item.t || '').toLowerCase()
+      answer: normalizeString(item.t).toLowerCase()
     };
   }
 

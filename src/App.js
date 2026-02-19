@@ -575,17 +575,20 @@ useEffect(() => {
             </div>
             <div className="flex flex-col">
               <h1 className={`text-sm font-black ${safeTheme.accent} leading-none`} style={{ fontFamily: '"Bubblegum Sans", cursive' }}>Science Sprouts</h1>
-              <div className="flex gap-1 mt-0.5">
-                {pack.modes.map(({ key: m }) => (
-                  <button 
-                    key={m}
-                    disabled={parentSettings.locks.gameMode || !parentSettings.allowedModes.includes(m)}
-                    onClick={() => setGameMode(m)}
-                    className={`px-1.5 py-0.5 rounded-full text-[7px] font-bold transition-all ${gameMode === m ? 'bg-green-500 text-white' : 'bg-white/70 text-green-700'} ${!parentSettings.allowedModes.includes(m) ? 'hidden' : ''}`}
-                  >
-                    {m[0].toUpperCase()}
-                  </button>
-                ))}
+              <div className="flex flex-col gap-0.5 mt-0.5">
+                <span className="text-[7px] font-bold text-stone-500 uppercase tracking-wide">Game Mode</span>
+                <div className="flex gap-1">
+                  {pack.modes.map(({ key: m, label }) => (
+                    <button 
+                      key={m}
+                      disabled={parentSettings.locks.gameMode || !parentSettings.allowedModes.includes(m)}
+                      onClick={() => setGameMode(m)}
+                      className={`min-w-[60px] px-2 py-1 rounded-full text-[8px] font-bold transition-all ${gameMode === m ? 'bg-green-500 text-white shadow-sm' : 'bg-white/70 text-stone-600'} ${!parentSettings.allowedModes.includes(m) ? 'hidden' : ''}`}
+                    >
+                      {label || m}
+                    </button>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
@@ -618,15 +621,17 @@ useEffect(() => {
               key={index}
               onClick={() => handleAnswer(option)}
               disabled={isAnimating}
-              className={`rounded-full text-[13px] font-bold text-white shadow-md transform transition-all duration-500 ease-in-out active:scale-95 ${safeTheme.btnColors[index]} ${hintedOptionIndex === index ? 'opacity-0 scale-0 w-0 h-0 m-0 pointer-events-none p-0 border-0' : 'w-11 h-11'}`}
+              className={`rounded-full text-[14px] font-bold text-white shadow-md transform transition-all duration-500 ease-in-out active:scale-95 flex items-center justify-center overflow-hidden ${safeTheme.btnColors[index]} ${hintedOptionIndex === index ? 'opacity-0 scale-0 w-0 h-0 m-0 pointer-events-none p-0 border-0' : 'w-full max-w-full h-14'}`}
             >
-              {hintedOptionIndex === index ? null : option}
+              <span className="line-clamp-2 px-2 text-center leading-tight">
+                {hintedOptionIndex === index ? null : option}
+              </span>
             </button>
           ))}
           <button 
             onClick={handleHint}
             disabled={hintedOptionIndex !== null || isAnimating}
-            className={`w-11 h-11 rounded-full flex items-center justify-center transition-all ${hintedOptionIndex !== null ? 'bg-stone-200 text-stone-400' : 'bg-yellow-100 text-yellow-700 hover:bg-yellow-200'}`}
+            className={`w-11 h-11 shrink-0 rounded-full flex items-center justify-center transition-all ${hintedOptionIndex !== null ? 'bg-stone-200 text-stone-400' : 'bg-yellow-100 text-yellow-700 hover:bg-yellow-200'}`}
           >
             <span className="text-base">{hintedOptionIndex !== null ? '✨' : '💡'}</span>
           </button>
