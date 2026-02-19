@@ -644,20 +644,32 @@ useEffect(() => {
                 <div className="absolute bottom-0 w-full h-1/2 bg-blue-300/30 blur-[1px]"></div>
               </div>
               <div className="absolute bottom-[35px] w-full max-w-[280px] h-4 bg-yellow-100 border-2 border-yellow-200 rounded-full transition-transform duration-700 ease-in-out origin-center flex items-center justify-between px-2 shadow-sm z-[60]" style={{ transform: `rotate(${tiltAngle}deg)` }}>
-                <div className="relative w-28 h-28 -mt-28 -ml-8 flex flex-wrap-reverse gap-0 items-end justify-center p-1">
-                  {[...Array(seeds)].map((_, i) => (
-                    <div key={i} className="w-1/3 flex justify-center items-end h-8">
-                      <img 
-                        src={safeTheme.balanceAsset} 
-                        alt="seed" 
-                        className={`w-10 h-10 relative z-20 ${i === seeds - 1 && isAnimating ? 'animate-fall-lightly' : 'animate-bounce-light'}`} 
-                        style={{ 
-                          animationDelay: i === seeds - 1 && isAnimating ? '0s' : `${i * 0.1}s`, 
-                          transform: `rotate(${-tiltAngle}deg)` 
-                        }} 
-                      />
-                    </div>
-                  ))}
+                <div className="relative w-28 h-32 -mt-32 -ml-8 flex flex-wrap-reverse gap-0 items-end justify-center pb-1">
+                  {[...Array(seeds)].map((_, i) => {
+                    const row = Math.floor((Math.sqrt(1 + 8 * (seeds - i)) - 1) / 2);
+                    const posInRow = i - (seeds - ((row + 1) * (row + 2)) / 2);
+                    const rowWidth = row + 1;
+                    return (
+                      <div 
+                        key={i} 
+                        className="absolute"
+                        style={{
+                          bottom: `${row * 8}px`,
+                          left: `50%`,
+                          transform: `translateX(${(posInRow - rowWidth / 2 + 0.5) * 42}px) rotate(${-tiltAngle}deg)`,
+                        }}
+                      >
+                        <img 
+                          src={safeTheme.balanceAsset} 
+                          alt="seed" 
+                          className={`w-10 h-10 relative z-20 ${i === seeds - 1 && isAnimating ? 'animate-fall-lightly' : 'animate-bounce-light'}`} 
+                          style={{ 
+                            animationDelay: i === seeds - 1 && isAnimating ? '0s' : `${i * 0.1}s`, 
+                          }} 
+                        />
+                      </div>
+                    );
+                  })}
                 </div>
                 <div className="relative w-20 h-20 -mt-20 -mr-4 flex flex-col items-center justify-end pb-1">
                   <img src={currentTargetPlant} alt="target" className="w-16 h-16 object-contain drop-shadow-md transform transition-transform duration-500" style={{ transform: `rotate(${-tiltAngle}deg)` }} />
