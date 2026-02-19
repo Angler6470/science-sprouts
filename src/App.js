@@ -623,7 +623,7 @@ useEffect(() => {
               key={index}
               onClick={() => handleAnswer(option)}
               disabled={isAnimating}
-              className={`rounded-xl px-2 py-3 text-[13px] font-bold text-white shadow-md transform transition-all duration-500 ease-in-out active:scale-95 flex items-center justify-center ${safeTheme.btnColors[index]} ${hintedOptionIndex === index ? 'opacity-0 scale-0 hidden pointer-events-none' : ''}`}
+              className={`rounded-xl px-2 py-3 text-[11px] font-bold text-white shadow-md transform transition-all duration-500 ease-in-out active:scale-95 flex items-center justify-center ${safeTheme.btnColors[index]} ${hintedOptionIndex === index ? 'opacity-0 scale-0 hidden pointer-events-none' : ''}`}
             >
               <span className="line-clamp-2 text-center leading-tight">
                 {hintedOptionIndex === index ? null : option}
