@@ -534,14 +534,28 @@ useEffect(() => {
         <span className="text-sm">⚙️</span>
       </button>
 
-      {/* Theme Toggle - Compact */}
-      <div className="fixed right-2 top-[calc(env(safe-area-inset-top)+0.5rem)] z-40 flex gap-1">
+      {/* Difficulty Sidebar */}
+      <div className="fixed left-2 top-1/2 -translate-y-1/2 z-40 flex flex-col gap-1.5">
+        {['beginner', 'intermediate', 'advanced'].map((d) => (
+          <button
+            key={d}
+            disabled={parentSettings.locks.difficulty || !parentSettings.allowedDifficulties.includes(d)}
+            onClick={() => setDifficulty(d)}
+            className={`w-8 h-8 rounded-full text-[9px] font-black transition-all border ${difficulty === d ? 'bg-stone-900 text-white border-stone-900' : 'bg-white/70 text-stone-600 border-stone-200'} ${!parentSettings.allowedDifficulties.includes(d) ? 'hidden' : ''}`}
+          >
+            {d === 'beginner' ? 'B' : d === 'intermediate' ? 'I' : 'A'}
+          </button>
+        ))}
+      </div>
+
+      {/* Theme Sidebar */}
+      <div className="fixed right-2 top-1/2 -translate-y-1/2 z-40 flex flex-col gap-1.5">
         {['garden', 'ocean', 'space'].map((t) => (
           <button
             key={t}
             disabled={parentSettings.locks.theme || !parentSettings.allowedThemes.includes(t)}
             onClick={() => setTheme(t)}
-            className={`w-6 h-6 rounded-full transition-all ${theme === t ? `${themeConfig[t].themeColor} scale-110 shadow-md` : 'bg-stone-300 opacity-40 scale-90'} ${!parentSettings.allowedThemes.includes(t) ? 'hidden' : ''}`}
+            className={`w-8 h-8 rounded-full transition-all ${theme === t ? `${themeConfig[t].themeColor} scale-110 shadow-md` : 'bg-stone-300 opacity-40 scale-90'} ${!parentSettings.allowedThemes.includes(t) ? 'hidden' : ''}`}
           />
         ))}
       </div>
@@ -581,7 +595,7 @@ useEffect(() => {
         {/* Compact Question Card */}
         <div className={`bg-white rounded-xl p-2 shadow-md border-b-2 ${safeTheme.problemBorder} w-full shrink-0 transition-transform ${feedback.type === 'error' ? 'animate-shake' : ''}`}>
           <div className="flex items-center justify-between">
-            <h2 className="text-xl font-black text-stone-700 flex-1 text-center">
+            <h2 className="text-base sm:text-lg font-black text-stone-700 flex-1 text-center leading-tight">
               {problem.prompt}
             </h2>
             {feedback.message && (
@@ -598,7 +612,7 @@ useEffect(() => {
               key={index}
               onClick={() => handleAnswer(option)}
               disabled={isAnimating}
-              className={`rounded-full text-lg font-bold text-white shadow-md transform transition-all duration-500 ease-in-out active:scale-95 ${safeTheme.btnColors[index]} ${hintedOptionIndex === index ? 'opacity-0 scale-0 w-0 h-0 m-0 pointer-events-none p-0 border-0' : 'w-12 h-12'}`}
+              className={`rounded-full text-[13px] font-bold text-white shadow-md transform transition-all duration-500 ease-in-out active:scale-95 ${safeTheme.btnColors[index]} ${hintedOptionIndex === index ? 'opacity-0 scale-0 w-0 h-0 m-0 pointer-events-none p-0 border-0' : 'w-11 h-11'}`}
             >
               {hintedOptionIndex === index ? null : option}
             </button>
@@ -606,9 +620,9 @@ useEffect(() => {
           <button 
             onClick={handleHint}
             disabled={hintedOptionIndex !== null || isAnimating}
-            className={`w-12 h-12 rounded-full flex items-center justify-center transition-all ${hintedOptionIndex !== null ? 'bg-stone-200 text-stone-400' : 'bg-yellow-100 text-yellow-700 hover:bg-yellow-200'}`}
+            className={`w-11 h-11 rounded-full flex items-center justify-center transition-all ${hintedOptionIndex !== null ? 'bg-stone-200 text-stone-400' : 'bg-yellow-100 text-yellow-700 hover:bg-yellow-200'}`}
           >
-            <span className="text-lg">{hintedOptionIndex !== null ? '✨' : '💡'}</span>
+            <span className="text-base">{hintedOptionIndex !== null ? '✨' : '💡'}</span>
           </button>
         </div>
 
