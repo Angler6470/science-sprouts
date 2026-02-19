@@ -308,6 +308,28 @@ function App() {
 
   const { elapsedSeconds } = useSessionTimer(parentSettings.sessionTimeLimit, handleTimeUp);
 
+  useEffect(() => {
+    const setVh = () => {
+      const vh = window.innerHeight * 0.01;
+      document.documentElement.style.setProperty('--app-vh', `${vh}px`);
+    };
+
+    setVh();
+    window.addEventListener('resize', setVh);
+    window.addEventListener('orientationchange', setVh);
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener('resize', setVh);
+    }
+
+    return () => {
+      window.removeEventListener('resize', setVh);
+      window.removeEventListener('orientationchange', setVh);
+      if (window.visualViewport) {
+        window.visualViewport.removeEventListener('resize', setVh);
+      }
+    };
+  }, []);
+
   // Initialize data on mount
   useEffect(() => {
     try {
@@ -499,7 +521,7 @@ useEffect(() => {
   const safeTheme = currentTheme || themeConfig.garden;
 
   return (
-    <div className={`min-h-[100dvh] ${safeTheme.bg} flex flex-col items-center p-3 pt-[calc(env(safe-area-inset-top)+0.75rem)] pb-[calc(env(safe-area-inset-bottom)+0.75rem)] font-sans ${safeTheme.textColor || 'text-stone-800'} overflow-hidden relative transition-colors duration-500`}>
+    <div className={`${safeTheme.bg} flex flex-col items-center p-3 pt-[calc(env(safe-area-inset-top)+0.75rem)] pb-[calc(env(safe-area-inset-bottom)+0.75rem)] font-sans ${safeTheme.textColor || 'text-stone-800'} overflow-hidden relative transition-colors duration-500`} style={{ minHeight: 'calc(var(--app-vh, 1vh) * 100)' }}>
       {showSplash && (
         <SplashScreen onFinish={() => { sessionStorage.setItem('science_sprouts_seen_splash', '1'); setShowSplash(false); }} />
       )}
