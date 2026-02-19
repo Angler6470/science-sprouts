@@ -535,7 +535,10 @@ useEffect(() => {
       </button>
 
       {/* Difficulty Sidebar */}
-      <div className="fixed left-2 top-1/2 -translate-y-1/2 z-40 flex flex-col gap-1.5">
+      <div className="fixed left-2 top-1/2 -translate-y-1/2 z-40 flex flex-col gap-1.5 items-center">
+        <span className="text-[8px] font-black uppercase tracking-widest text-stone-500 bg-white/70 px-1.5 py-0.5 rounded-full border border-stone-200">
+          Difficulty
+        </span>
         {['beginner', 'intermediate', 'advanced'].map((d) => (
           <button
             key={d}
@@ -549,7 +552,10 @@ useEffect(() => {
       </div>
 
       {/* Theme Sidebar */}
-      <div className="fixed right-2 top-1/2 -translate-y-1/2 z-40 flex flex-col gap-1.5">
+      <div className="fixed right-2 top-1/2 -translate-y-1/2 z-40 flex flex-col gap-1.5 items-center">
+        <span className="text-[8px] font-black uppercase tracking-widest text-stone-500 bg-white/70 px-1.5 py-0.5 rounded-full border border-stone-200">
+          Theme
+        </span>
         {['garden', 'ocean', 'space'].map((t) => (
           <button
             key={t}
