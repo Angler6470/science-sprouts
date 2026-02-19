@@ -618,25 +618,31 @@ useEffect(() => {
         </div>
 
         {/* Answer Buttons */}
-        <div className="w-full grid grid-cols-3 gap-2 shrink-0">{problem.options.map((option, index) => (
-            <button
-              key={index}
-              onClick={() => handleAnswer(option)}
-              disabled={isAnimating}
-              className={`rounded-xl px-2 py-3 text-[11px] font-bold text-white shadow-md transform transition-all duration-500 ease-in-out active:scale-95 flex items-center justify-center ${safeTheme.btnColors[index]} ${hintedOptionIndex === index ? 'opacity-0 scale-0 hidden pointer-events-none' : ''}`}
+        <div className="w-full shrink-0">
+          <div className="grid grid-cols-3 gap-2">{problem.options.map((option, index) => (
+              <button
+                key={index}
+                onClick={() => handleAnswer(option)}
+                disabled={isAnimating}
+                className={`rounded-xl px-2 py-3 text-[10px] font-bold text-white shadow-md transform transition-all duration-500 ease-in-out active:scale-95 flex items-center justify-center ${safeTheme.btnColors[index]} ${hintedOptionIndex === index ? 'opacity-0 scale-0 hidden pointer-events-none' : ''}`}
+              >
+                <span className="line-clamp-2 break-words text-center leading-tight">
+                  {hintedOptionIndex === index ? null : option}
+                </span>
+              </button>
+            ))}
+          </div>
+          <div className="grid grid-cols-3 mt-2">
+            <div />
+            <button 
+              onClick={handleHint}
+              disabled={hintedOptionIndex !== null || isAnimating}
+              className={`rounded-xl flex items-center justify-center transition-all py-2 ${hintedOptionIndex !== null ? 'bg-stone-200 text-stone-400' : 'bg-yellow-100 text-yellow-700 hover:bg-yellow-200'}`}
             >
-              <span className="line-clamp-2 text-center leading-tight">
-                {hintedOptionIndex === index ? null : option}
-              </span>
+              <span className="text-base">{hintedOptionIndex !== null ? '✨' : '💡'}</span>
             </button>
-          ))}
-          <button 
-            onClick={handleHint}
-            disabled={hintedOptionIndex !== null || isAnimating}
-            className={`rounded-xl flex items-center justify-center transition-all ${hintedOptionIndex !== null ? 'bg-stone-200 text-stone-400' : 'bg-yellow-100 text-yellow-700 hover:bg-yellow-200'}`}
-          >
-            <span className="text-base">{hintedOptionIndex !== null ? '✨' : '💡'}</span>
-          </button>
+            <div />
+          </div>
         </div>
 
         <div className="w-full flex-1 flex items-center justify-center min-h-0">
