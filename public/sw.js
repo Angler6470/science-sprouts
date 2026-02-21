@@ -1,5 +1,8 @@
 /* eslint-disable no-restricted-globals */
-const CACHE_NAME = 'readingsprouts-v1';
+// Dynamic cache name with timestamp - forces cache invalidation on each deployment
+const CACHE_BASE = 'sciencesprouts';
+const CACHE_VERSION = new Date().toISOString().split('T')[0]; // YYYY-MM-DD format
+const CACHE_NAME = `${CACHE_BASE}-${CACHE_VERSION}`;
 const STATIC_ASSETS = [
   '/',
   '/index.html',
@@ -48,35 +51,55 @@ self.addEventListener('activate', (event) => {
   self.clients.claim();
 });
 
-// Fetch event - cache-first for static assets, network-first for others
+// Fetch event - network-first for HTML, cache-first for static assets
 self.addEventListener('fetch', (event) => {
   // Skip cross-origin requests
   if (!event.request.url.startsWith(self.location.origin)) return;
 
-  event.respondWith(
-    caches.match(event.request).then((cachedResponse) => {
-      if (cachedResponse) {
-        return cachedResponse;
-      }
+  const isHtmlRequest = event.request.headers.get('accept')?.includes('text/html');
+  const isStaticAsset = event.request.url.includes('/assets/') || 
+                        event.request.url.includes('/static/');
 
-      return fetch(event.request).then((response) => {
-        // Cache new static assets (like theme-specific plants) as they are loaded
-        if (response.status === 200 && (
-          event.request.url.includes('/assets/') || 
-          event.request.url.includes('/static/')
-        )) {
-          const responseToCache = response.clone();
-          caches.open(CACHE_NAME).then((cache) => {
-            cache.put(event.request, responseToCache);
-          });
+  if (isHtmlRequest) {
+    // Network-first for HTML - always try to get latest version
+    event.respondWith(
+      fetch(event.request)
+        .then((response) => {
+          if (response.status === 200) {
+            // Cache successful HTML responses
+            const responseToCache = response.clone();
+            caches.open(CACHE_NAME).then((cache) => {
+              cache.put(event.request, responseToCache);
+            });
+          }
+          return response;
+        })
+        .catch(() => {
+          // Fallback to cache if network fails
+          return caches.match(event.request) || caches.match('/');
+        })
+    );
+  } else {
+    // Cache-first for static assets
+    event.respondWith(
+      caches.match(event.request).then((cachedResponse) => {
+        if (cachedResponse) {
+          return cachedResponse;
         }
-        return response;
-      }).catch(() => {
-        // If both network and cache fail, and it's a navigation request, return index.html
-        if (event.request.mode === 'navigate') {
-          return caches.match('/');
-        }
-      });
-    })
-  );
+        return fetch(event.request).then((response) => {
+          // Cache successful responses for static assets
+          if (response.status === 200) {
+            const responseToCache = response.clone();
+            caches.open(CACHE_NAME).then((cache) => {
+              cache.put(event.request, responseToCache);
+            });
+          }
+          return response;
+        }).catch(() => {
+          // Return blank response for failed asset requests
+          return new Response('', { status: 404 });
+        });
+      })
+    );
+  }
 });
